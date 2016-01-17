@@ -44,9 +44,9 @@ def _gcm_send(data, content_type):
         if not app_type:
             key = SETTINGS.get("GCM_API_KEY")
         # add more app if required in if-else ladder
-        elif data.get('app_type') == 'app1':
+        elif app_type == 'app1':
             key = SETTINGS.get("GCM_APP1_KEY")
-        elif data.get('app_type') == 'app2':
+        elif app_type == 'app2':
             key = SETTINGS.get("GCM_APP2_KEY")
     else:
         key = SETTINGS.get("GCM_API_KEY")
