@@ -19,10 +19,10 @@ class Device(models.Model):
     class Meta:
         abstract = True
 
-        def __str__(self):
-            return self.name or \
-                   str(self.device_id or "") or \
-                   "%s for %s" % (self.__class__.__name__, self.user or "unknown user")
+    def __str__(self):
+        return self.name or \
+               str(self.device_id or "") or \
+               "%s for %s" % (self.__class__.__name__, self.user or "unknown user")
 
 
 class GCMDeviceManager(models.Manager):
@@ -56,12 +56,12 @@ class GCMDevice(Device):
     class Meta:
         verbose_name = _("GCM device")
 
-        def send_message(self, message, **kwargs):
-            from .gcm import gcm_send_message
-            data = kwargs.pop("extra", {})
-            if message is not None:
-                data["message"] = message
-                return gcm_send_message(registration_id=self.registration_id, data=data, **kwargs)
+    def send_message(self, message, **kwargs):
+        from .gcm import gcm_send_message
+        data = kwargs.pop("extra", {})
+        if message is not None:
+            data["message"] = message
+            return gcm_send_message(registration_id=self.registration_id, data=data, **kwargs)
 
 
 class APNSDeviceManager(models.Manager):
@@ -87,10 +87,10 @@ class APNSDevice(Device):
     class Meta:
         verbose_name = _("APNS device")
 
-        def send_message(self, message, **kwargs):
-            from .apns import apns_send_message
+    def send_message(self, message, **kwargs):
+        from .apns import apns_send_message
 
-            return apns_send_message(registration_id=self.registration_id, alert=message, **kwargs)
+        return apns_send_message(registration_id=self.registration_id, alert=message, **kwargs)
 
 
 # This is an APNS-only function right now, but maybe GCM will implement it
