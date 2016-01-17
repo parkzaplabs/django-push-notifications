@@ -37,8 +37,10 @@ def _gcm_send(data, content_type):
     key = dict()
     if SETTINGS.get("GCM_CUSTOM_ACTIVE"):
         # getting app type
-        app_type = data.split('app_type=')[1]
-        app_type = app_type.split('&')[0]
+        app_type = None
+        if not data.find('app_type=') == -1:
+            app_type = data.split('app_type=')[1]
+            app_type = app_type.split('&')[0]
         if not app_type:
             key = SETTINGS.get("GCM_API_KEY")
         # add more app if required in if-else ladder
