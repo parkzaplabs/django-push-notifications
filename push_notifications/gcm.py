@@ -36,13 +36,16 @@ def _chunks(l, n):
 def _gcm_send(data, content_type):
     key = dict()
     if SETTINGS.get("GCM_CUSTOM_ACTIVE"):
+        # getting app type
+        app_type = data.split('app_type=')[1]
+        app_type = app_type.split('&')[0]
+        if not app_type:
+            key = SETTINGS.get("GCM_API_KEY")
         # add more app if required in if-else ladder
-        if data.get('app_type') == 'app1':
+        elif data.get('app_type') == 'app1':
             key = SETTINGS.get("GCM_APP1_KEY")
         elif data.get('app_type') == 'app2':
             key = SETTINGS.get("GCM_APP2_KEY")
-        else:
-            key = SETTINGS.get("GCM_API_KEY")
     else:
         key = SETTINGS.get("GCM_API_KEY")
     if not key:
