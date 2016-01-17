@@ -43,6 +43,8 @@ def _gcm_send(data, content_type):
             key = SETTINGS.get("GCM_APP2_KEY")
         else:
             key = SETTINGS.get("GCM_API_KEY")
+    else:
+        key = SETTINGS.get("GCM_API_KEY")
     if not key:
         raise ImproperlyConfigured(
             'You need to set PUSH_NOTIFICATIONS_SETTINGS["GCM_API_KEY"] to send messages through GCM.')
