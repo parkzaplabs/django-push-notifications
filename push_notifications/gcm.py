@@ -19,6 +19,9 @@ except ImportError:
 from django.core.exceptions import ImproperlyConfigured
 from . import NotificationError
 from .settings import PUSH_NOTIFICATIONS_SETTINGS as SETTINGS
+import logging
+logging.basicConfig()
+logger = logging.getLogger(__name__)
 
 
 class GCMError(NotificationError):
@@ -105,7 +108,7 @@ def _gcm_send_plain(registration_id, data, **kwargs):
             device = GCMDevice.objects.filter(registration_id=values["registration_id"])
             device.update(active=0)
             return result
-
+        logger.error(result)
         raise GCMError(result)
 
     return result
@@ -143,6 +146,7 @@ def _gcm_send_json(registration_ids, data, **kwargs):
                     ids_to_remove.append(registration_ids[index])
                 else:
                     throw_error = True
+                logger.error(result)
 
             # If registration_id is set, replace the original ID with the new value (canonical ID) in your
             # server database. Note that the original ID is not part of the result, so you need to obtain it
