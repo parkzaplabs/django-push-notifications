@@ -15,3 +15,5 @@ build
 
 # tox
 .tox
+# shivam
+push_notifications/migrations/*

@@ -97,7 +97,7 @@ class GCMDevice(Device):
 	registration_id = models.TextField(verbose_name=_("Registration ID"))
 	cloud_message_type = models.CharField(
 		verbose_name=_("Cloud Message Type"), max_length=3,
-		choices=CLOUD_MESSAGE_TYPES, default="GCM",
+		choices=CLOUD_MESSAGE_TYPES, default="FCM",
 		help_text=_("You should choose FCM or GCM")
 	)
 	objects = GCMDeviceManager()
