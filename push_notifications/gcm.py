@@ -84,7 +84,7 @@ def _fcm_send(data, content_type, application_id):
 		key = SETTINGS.get("GCM_APP2_KEY")
 	if not key:
 		raise ImproperlyConfigured(
-			'You need to set PUSH_NOTIFICATIONS_SETTINGS["GCM_API_KEY"] to send messages through FCM.')
+			'You need to set PUSH_NOTIFICATIONS_SETTINGS["GCM_APP2_KEY"] to send messages through FCM.')
 
 	headers = {
 		"Content-Type": content_type,
