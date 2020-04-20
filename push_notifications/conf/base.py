@@ -2,9 +2,21 @@ from django.core.exceptions import ImproperlyConfigured
 
 
 class BaseConfig(object):
+<<<<<<< HEAD
 	def get_apns_certificate(self, application_id=None):
 		raise NotImplementedError
 
+=======
+	def has_auth_token_creds(self, application_id=None):
+		raise NotImplementedError
+
+	def get_apns_certificate(self, application_id=None):
+		raise NotImplementedError
+
+	def get_apns_auth_creds(self, application_id=None):
+		raise NotImplementedError
+
+>>>>>>> upstream/master
 	def get_apns_use_sandbox(self, application_id=None):
 		raise NotImplementedError
 
@@ -38,6 +50,11 @@ class BaseConfig(object):
 		raise NotImplementedError
 
 
+<<<<<<< HEAD
+=======
+# This works for both the certificate and the auth key (since that's just
+# a certificate).
+>>>>>>> upstream/master
 def check_apns_certificate(ss):
 	mode = "start"
 	for s in ss.split("\n"):

@@ -1,7 +1,27 @@
+<<<<<<< HEAD:CHANGELOG.md
 ## 1.7.0 (unreleased)
 * BACKWARDS-INCOMPATIBLE: Drop support for Django Rest Framework < 3.7
 
 
+=======
+## 2.0.0 (unreleased)
+* BACKWARDS-INCOMPATIBLE: Drop support for Django Rest Framework < 3.7
+* BACKWARDS-INCOMPATIBLE: NotificationError is now moved from `__init__.py` to `exceptions.py`
+    * Import with `from push_notifications.exceptions import NotificationError`
+* PYTHON: Add support for Python 3.7
+* APNS: Drop apns_errors, use exception class name instead
+* FCM: Add FCM channels support for custom notification sound on Android Oreo
+* BUGFIX: Fix error when send a message and the device is not active
+* BUGFIX: Fix error when APN bulk messages sent with localized keys and badge function
+* BUGFIX: Fix `Push failed: 403 fobidden` error when sending message to Chrome WebPushDevice
+
+
+## 1.6.1 (2019-08-16)
+* Pin dependency to apns to <0.6.0 to fix a Python version
+  incompatibility.
+* Add configuration for semi-automatic releases via Jazzband.
+
+>>>>>>> upstream/master:CHANGELOG.md
 ## 1.6.0 (2018-01-31)
 * BACKWARDS-INCOMPATIBLE: Drop support for Django < 1.11
 * DJANGO: Support Django 2.0

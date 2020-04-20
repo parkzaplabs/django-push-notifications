@@ -1,8 +1,16 @@
 from django.utils.module_loading import import_string
+<<<<<<< HEAD
 from .app import AppConfig  # noqa: F401
 from .appmodel import AppModelConfig  # noqa: F401
 from .legacy import LegacyConfig  # noqa: F401
 from ..settings import PUSH_NOTIFICATIONS_SETTINGS as SETTINGS
+=======
+
+from .app import AppConfig  # noqa: F401
+from .appmodel import AppModelConfig  # noqa: F401
+from .legacy import LegacyConfig  # noqa: F401
+from ..settings import PUSH_NOTIFICATIONS_SETTINGS as SETTINGS  # noqa: I001
+>>>>>>> upstream/master
 
 
 manager = None

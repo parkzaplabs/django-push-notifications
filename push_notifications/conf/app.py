@@ -1,5 +1,8 @@
 from django.core.exceptions import ImproperlyConfigured
+<<<<<<< HEAD
 from django.utils.six import string_types
+=======
+>>>>>>> upstream/master
 
 from ..settings import PUSH_NOTIFICATIONS_SETTINGS as SETTINGS
 from .base import BaseConfig, check_apns_certificate
@@ -43,7 +46,19 @@ OPTIONAL_SETTINGS = [
 	"APPLICATION_GROUP", "APPLICATION_SECRET"
 ]
 
+<<<<<<< HEAD
 APNS_REQUIRED_SETTINGS = ["CERTIFICATE"]
+=======
+# Since we can have an auth key, combined with a auth key id and team id *or*
+# a certificate, we make these all optional, and then make sure we have one or
+# the other (group) of settings.
+APNS_SETTINGS_CERT_CREDS = "CERTIFICATE"
+
+# Subkeys for APNS_SETTINGS_AUTH_CREDS
+APNS_AUTH_CREDS_REQUIRED = ["AUTH_KEY_PATH", "AUTH_KEY_ID", "TEAM_ID"]
+APNS_AUTH_CREDS_OPTIONAL = ["CERTIFICATE", "ENCRYPTION_ALGORITHM", "TOKEN_LIFETIME"]
+
+>>>>>>> upstream/master
 APNS_OPTIONAL_SETTINGS = [
 	"USE_SANDBOX", "USE_ALTERNATIVE_PORT", "TOPIC"
 ]
@@ -118,6 +133,7 @@ class AppConfig(BaseConfig):
 			)
 
 	def _validate_apns_config(self, application_id, application_config):
+<<<<<<< HEAD
 		allowed = REQUIRED_SETTINGS + OPTIONAL_SETTINGS + APNS_REQUIRED_SETTINGS + \
 			APNS_OPTIONAL_SETTINGS
 
@@ -125,14 +141,55 @@ class AppConfig(BaseConfig):
 		self._validate_required_settings(
 			application_id, application_config, APNS_REQUIRED_SETTINGS
 		)
+=======
+		allowed = REQUIRED_SETTINGS + OPTIONAL_SETTINGS + \
+			APNS_AUTH_CREDS_REQUIRED + \
+			APNS_AUTH_CREDS_OPTIONAL + \
+			APNS_OPTIONAL_SETTINGS
+
+		self._validate_allowed_settings(application_id, application_config, allowed)
+		# We have two sets of settings, certificate and JWT auth key.
+		# Auth Key requires 3 values, so if that is set, that will take
+		# precedence. If None are set, we will throw an error.
+		has_cert_creds = APNS_SETTINGS_CERT_CREDS in \
+			application_config.keys()
+		self.has_token_creds = True
+		for token_setting in APNS_AUTH_CREDS_REQUIRED:
+			if token_setting not in application_config.keys():
+				self.has_token_creds = False
+				break
+
+		if not has_cert_creds and not self.has_token_creds:
+			raise ImproperlyConfigured(
+				MISSING_SETTING.format(
+					application_id=application_id,
+					setting=(APNS_SETTINGS_CERT_CREDS, APNS_AUTH_CREDS_REQUIRED)))
+		cert_path = None
+		if has_cert_creds:
+			cert_path = "CERTIFICATE"
+		elif self.has_token_creds:
+			cert_path = "AUTH_KEY_PATH"
+			allowed_tokens = APNS_AUTH_CREDS_REQUIRED + \
+				APNS_AUTH_CREDS_OPTIONAL + \
+				APNS_OPTIONAL_SETTINGS + \
+				REQUIRED_SETTINGS
+			self._validate_allowed_settings(application_id, application_config, allowed_tokens)
+			self._validate_required_settings(
+				application_id, application_config, APNS_AUTH_CREDS_REQUIRED
+			)
+		self._validate_apns_certificate(application_config[cert_path])
+>>>>>>> upstream/master
 
 		# determine/set optional values
 		application_config.setdefault("USE_SANDBOX", False)
 		application_config.setdefault("USE_ALTERNATIVE_PORT", False)
 		application_config.setdefault("TOPIC", None)
 
+<<<<<<< HEAD
 		self._validate_apns_certificate(application_config["CERTIFICATE"])
 
+=======
+>>>>>>> upstream/master
 	def _validate_apns_certificate(self, certfile):
 		"""Validate the APNS certificate at startup."""
 
@@ -142,7 +199,11 @@ class AppConfig(BaseConfig):
 				check_apns_certificate(content)
 		except Exception as e:
 			raise ImproperlyConfigured(
+<<<<<<< HEAD
 				"The APNS certificate file at %r is not readable: %s" % (certfile, e)
+=======
+				"The APNS certificate file at {!r} is not readable: {}".format(certfile, e)
+>>>>>>> upstream/master
 			)
 
 	def _validate_fcm_config(self, application_id, application_config):
@@ -212,17 +273,34 @@ class AppConfig(BaseConfig):
 				)
 
 	def _validate_required_settings(
+<<<<<<< HEAD
 		self, application_id, application_config, required_settings
+=======
+		self, application_id, application_config, required_settings,
+		should_throw=True
+>>>>>>> upstream/master
 	):
 		"""All required keys must be present"""
 
 		for setting_key in required_settings:
 			if setting_key not in application_config.keys():
+<<<<<<< HEAD
 				raise ImproperlyConfigured(
 					MISSING_SETTING.format(
 						application_id=application_id, setting=setting_key
 					)
 				)
+=======
+				if should_throw:
+					raise ImproperlyConfigured(
+						MISSING_SETTING.format(
+							application_id=application_id, setting=setting_key
+						)
+					)
+				else:
+					return False
+		return True
+>>>>>>> upstream/master
 
 	def _get_application_settings(self, application_id, platform, settings_key):
 		"""
@@ -263,6 +341,12 @@ class AppConfig(BaseConfig):
 
 		return app_config.get(settings_key)
 
+<<<<<<< HEAD
+=======
+	def has_auth_token_creds(self, application_id=None):
+		return self.has_token_creds
+
+>>>>>>> upstream/master
 	def get_gcm_api_key(self, application_id=None):
 		return self._get_application_settings(application_id, "GCM", "API_KEY")
 
@@ -280,7 +364,11 @@ class AppConfig(BaseConfig):
 
 	def get_apns_certificate(self, application_id=None):
 		r = self._get_application_settings(application_id, "APNS", "CERTIFICATE")
+<<<<<<< HEAD
 		if not isinstance(r, string_types):
+=======
+		if not isinstance(r, str):
+>>>>>>> upstream/master
 			# probably the (Django) file, and file path should be got
 			if hasattr(r, "path"):
 				return r.path
@@ -293,6 +381,24 @@ class AppConfig(BaseConfig):
 				)
 		return r
 
+<<<<<<< HEAD
+=======
+	def get_apns_auth_creds(self, application_id=None):
+		return \
+		(self._get_apns_auth_key_path(application_id),
+			self._get_apns_auth_key_id(application_id),
+			self._get_apns_team_id(application_id))
+
+	def _get_apns_auth_key_path(self, application_id=None):
+		return self._get_application_settings(application_id, "APNS", "AUTH_KEY_PATH")
+
+	def _get_apns_auth_key_id(self, application_id=None):
+		return self._get_application_settings(application_id, "APNS", "AUTH_KEY_ID")
+
+	def _get_apns_team_id(self, application_id=None):
+		return self._get_application_settings(application_id, "APNS", "TEAM_ID")
+
+>>>>>>> upstream/master
 	def get_apns_use_sandbox(self, application_id=None):
 		return self._get_application_settings(application_id, "APNS", "USE_SANDBOX")
 

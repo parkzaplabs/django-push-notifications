@@ -6,6 +6,7 @@ https://firebase.google.com/docs/cloud-messaging/
 """
 
 import json
+<<<<<<< HEAD
 
 from django.core.exceptions import ImproperlyConfigured
 
@@ -14,6 +15,30 @@ from .conf import get_manager
 from .exceptions import NotificationError
 from .models import GCMDevice
 from .settings import PUSH_NOTIFICATIONS_SETTINGS as SETTINGS
+=======
+
+from django.core.exceptions import ImproperlyConfigured
+
+from .compat import Request, urlopen
+from .conf import get_manager
+from .exceptions import NotificationError
+from .models import GCMDevice
+
+
+# Valid keys for FCM messages. Reference:
+# https://firebase.google.com/docs/cloud-messaging/http-server-ref
+FCM_TARGETS_KEYS = [
+	"to", "condition", "notification_key"
+]
+FCM_OPTIONS_KEYS = [
+	"collapse_key", "priority", "content_available", "delay_while_idle", "time_to_live",
+	"restricted_package_name", "dry_run"
+]
+FCM_NOTIFICATIONS_PAYLOAD_KEYS = [
+	"title", "body", "icon", "sound", "badge", "color", "tag", "click_action",
+	"body_loc_key", "body_loc_args", "title_loc_key", "title_loc_args", "android_channel_id"
+]
+>>>>>>> upstream/master
 
 # Valid keys for FCM messages. Reference:
 # https://firebase.google.com/docs/cloud-messaging/http-server-ref
@@ -54,6 +79,7 @@ def _gcm_send(data, content_type, application_id):
 	return urlopen(
 		request, timeout=get_manager().get_error_timeout("GCM", application_id)
 	).read().decode("utf-8")
+<<<<<<< HEAD
 
 
 def _fcm_send(data, content_type, application_id):
@@ -86,6 +112,13 @@ def _fcm_send(data, content_type, application_id):
 		raise ImproperlyConfigured(
 			'You need to set PUSH_NOTIFICATIONS_SETTINGS["GCM_APP2_KEY"] to send messages through FCM.')
 
+=======
+
+
+def _fcm_send(data, content_type, application_id):
+	key = get_manager().get_fcm_api_key(application_id)
+
+>>>>>>> upstream/master
 	headers = {
 		"Content-Type": content_type,
 		"Authorization": "key=%s" % (key),
@@ -148,7 +181,11 @@ def _cm_send_request(
 
 	data = data.copy()
 
+<<<<<<< HEAD
 	# If using FCM, optionnally autodiscovers notification related keys
+=======
+	# If using FCM, optionally autodiscovers notification related keys
+>>>>>>> upstream/master
 	# https://firebase.google.com/docs/cloud-messaging/concept-options#notifications_and_data_messages
 	if cloud_type == "FCM" and use_fcm_notifications:
 		notification_payload = {}

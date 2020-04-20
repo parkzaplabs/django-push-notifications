@@ -25,10 +25,7 @@ ROOT_URLCONF = "core.urls"
 
 SECRET_KEY = "foobar"
 
-<<<<<<< HEAD
-PUSH_NOTIFICATIONS_SETTINGS = {}
-=======
 PUSH_NOTIFICATIONS_SETTINGS = {
-	"WP_CLAIMS": {"sub": "mailto: jazzband@example.com"}
+	"WP_CLAIMS": {"sub": "mailto: jazzband@example.com"},
+	"UNIQUE_REG_ID": True
 }
->>>>>>> upstream/master

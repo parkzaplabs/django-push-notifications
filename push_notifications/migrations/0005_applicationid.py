@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
+<<<<<<< HEAD
 from __future__ import unicode_literals
 
+=======
+>>>>>>> upstream/master
 from django.conf import settings
 from django.db import migrations, models
 

@@ -1,9 +1,13 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 from django.conf import settings
 from django.db import migrations, models
 
+<<<<<<< HEAD
+from django.conf import settings
+from django.db import migrations, models
+
+=======
+>>>>>>> upstream/master
 import push_notifications.fields
 
 

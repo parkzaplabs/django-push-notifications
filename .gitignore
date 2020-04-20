@@ -15,5 +15,9 @@ build
 
 # tox
 .tox
+<<<<<<< HEAD
 # shivam
 push_notifications/migrations/*
+=======
+*.egg-info/
+>>>>>>> upstream/master

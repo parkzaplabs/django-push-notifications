@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 from __future__ import absolute_import
 
+=======
+>>>>>>> upstream/master
 from django.test import TestCase
 
 from push_notifications.gcm import send_bulk_message, send_message

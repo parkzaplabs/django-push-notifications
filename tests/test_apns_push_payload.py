@@ -83,6 +83,21 @@ class APNSPushPayloadTest(TestCase):
 					self.assertEqual(kargs["priority"], NotificationPriority.Immediate)
 					self.assertEqual(kargs["expiration"], 30)
 
+<<<<<<< HEAD
+=======
+	def test_collapse_id(self):
+		with mock.patch("apns2.credentials.init_context"):
+			with mock.patch("apns2.client.APNsClient.connect"):
+				with mock.patch("apns2.client.APNsClient.send_notification") as s:
+					_apns_send(
+						"123", "sample", collapse_id="456789"
+					)
+					args, kargs = s.call_args
+					self.assertEqual(args[0], "123")
+					self.assertEqual(args[1].alert, "sample")
+					self.assertEqual(kargs["collapse_id"], "456789")
+
+>>>>>>> upstream/master
 	def test_bad_priority(self):
 		with mock.patch("apns2.credentials.init_context"):
 			with mock.patch("apns2.client.APNsClient.connect"):
